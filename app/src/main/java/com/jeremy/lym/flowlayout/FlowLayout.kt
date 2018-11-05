@@ -26,7 +26,7 @@ class FlowLayout @JvmOverloads constructor(context: Context, attributeSet: Attri
         for (i in 0 until childCount){
             val child = getChildAt(i)
             val lp = child.layoutParams as MarginLayoutParams
-            measureChildWithMargins(child, widthMeasureSpec, 0, heightMeasureSpec, heightUsed)
+            measureChild(child, widthMeasureSpec, heightMeasureSpec)
             if (widthMode != MeasureSpec.UNSPECIFIED &&
                     widthUsed + child.measuredWidth + lp.rightMargin > widthSize - paddingRight){ //换行
                 heightUsed += maxLineHeight
