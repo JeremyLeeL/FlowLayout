@@ -13,7 +13,6 @@ class FlowLayout @JvmOverloads constructor(context: Context, attributeSet: Attri
     : ViewGroup(context, attributeSet, defStyleAttr) {
     private val rectList = ArrayList<Rect>()
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec)
         val widthSize = MeasureSpec.getSize(widthMeasureSpec)
         val widthMode = MeasureSpec.getMode(widthMeasureSpec)
         val heightSize = MeasureSpec.getSize(heightMeasureSpec)
@@ -25,8 +24,10 @@ class FlowLayout @JvmOverloads constructor(context: Context, attributeSet: Attri
         var maxLineHeight = 0
         for (i in 0 until childCount){
             val child = getChildAt(i)
+            val lp = child.layoutParams as MarginLayoutParams
             measureChildWithMargins(child, widthMeasureSpec, 0, heightMeasureSpec, heightUsed)
-            if (widthMode != MeasureSpec.UNSPECIFIED && widthUsed + child.measuredWidth > widthSize){ //换行
+            if (widthMode != MeasureSpec.UNSPECIFIED &&
+                    widthUsed + child.measuredWidth + lp.rightMargin > widthSize - paddingRight){ //换行
                 heightUsed += maxLineHeight
                 maxLineWidth = Math.max(widthUsed, maxLineWidth)
                 widthUsed = paddingLeft
@@ -40,11 +41,14 @@ class FlowLayout @JvmOverloads constructor(context: Context, attributeSet: Attri
             }else{
                 rect = rectList[i]
             }
-            rect.set(widthUsed, heightUsed, widthUsed + child.measuredWidth, heightUsed + child.measuredHeight)
+            widthUsed += lp.leftMargin
+            rect.set(widthUsed, heightUsed + lp.topMargin,
+                    widthUsed + child.measuredWidth, heightUsed + lp.topMargin + child.measuredHeight)
 
-            widthUsed += child.measuredWidth
-            maxLineHeight = Math.max(child.measuredHeight, maxLineHeight)
+            widthUsed += child.measuredWidth + lp.rightMargin
+            maxLineHeight = Math.max(child.measuredHeight + lp.topMargin + lp.bottomMargin, maxLineHeight)
         }
+        maxLineWidth = Math.max(widthUsed, maxLineWidth)
         val width = if (widthMode == MeasureSpec.EXACTLY) widthSize else maxLineWidth
         val height = if (heightMode == MeasureSpec.EXACTLY) heightSize else heightUsed + maxLineHeight
         setMeasuredDimension(width, height)

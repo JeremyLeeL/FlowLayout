@@ -21,7 +21,7 @@ public class ColoredTextView extends android.support.v7.widget.AppCompatTextView
             Color.parseColor("#795548")
     };
     private static final int[] TEXT_SIZES = {
-            16, 22, 28
+            22, 22, 22
     };
     private static final Random random = new Random();
     private static final int CORNER_RADIUS = (int) Utils.dpToPixel(4);
