@@ -34,8 +34,6 @@ class FlowLayout @JvmOverloads constructor(context: Context, attributeSet: Attri
                 widthUsed = paddingLeft
                 maxLineHeight = 0
             }
-            if (child.visibility == View.GONE)
-                continue
             var rect: Rect
             if (rectList.size <= i){
                 rect = Rect()
@@ -43,6 +41,8 @@ class FlowLayout @JvmOverloads constructor(context: Context, attributeSet: Attri
             }else{
                 rect = rectList[i]
             }
+            if (child.visibility == View.GONE)
+                continue
             widthUsed += lp.leftMargin
             rect.set(widthUsed, heightUsed + lp.topMargin,
                     widthUsed + child.measuredWidth, heightUsed + lp.topMargin + child.measuredHeight)
