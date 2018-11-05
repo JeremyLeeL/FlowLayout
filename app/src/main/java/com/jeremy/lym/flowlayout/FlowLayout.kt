@@ -3,6 +3,7 @@ package com.jeremy.lym.flowlayout
 import android.content.Context
 import android.graphics.Rect
 import android.util.AttributeSet
+import android.view.View
 import android.view.ViewGroup
 
 /**
@@ -33,7 +34,8 @@ class FlowLayout @JvmOverloads constructor(context: Context, attributeSet: Attri
                 widthUsed = paddingLeft
                 maxLineHeight = 0
             }
-
+            if (child.visibility == View.GONE)
+                continue
             var rect: Rect
             if (rectList.size <= i){
                 rect = Rect()
